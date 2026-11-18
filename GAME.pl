@@ -1,0 +1,88 @@
+
+% ARTI 401 - Lab 9
+% Task: Name Game
+
+:- dynamic letter/1.
+
+% Initial set of letters
+letter(a).
+letter(b).
+letter(c).
+
+% Start the game
+start :-
+    write('Hi. This is the "Name Game"'), nl,
+    write('You will be given a set of English letters.'), nl,
+    write('You can add, delete or move letters to create your name.'), nl,
+    menu.
+
+% Display menu
+menu :-
+    nl,
+    write('Choose from the following:'), nl,
+    write('1- Display the current set of letters'), nl,
+    write('2- Add a letter'), nl,
+    write('3- Add a letter at the top'), nl,
+    write('4- Add a letter at the bottom'), nl,
+    write('5- Delete a letter'), nl,
+    write('6- Delete all letters'), nl,
+    write('7- Exit'), nl,
+    write('Enter your choice: '),
+    read(Choice),
+    execute(Choice).
+
+% Display current letters
+execute(1) :-
+    write('Current set of letters: '), nl,
+    listing(letter/1),
+    menu.
+
+% Add a letter
+execute(2) :-
+    write('Enter a letter: '),
+    read(Letter),
+    assertz(letter(Letter)),
+    write('Letter added successfully.'), nl,
+    menu.
+
+% Add a letter at the top
+execute(3) :-
+    write('Enter a letter: '),
+    read(Letter),
+    asserta(letter(Letter)),
+    write('Letter added at the top.'), nl,
+    menu.
+
+% Add a letter at the bottom
+execute(4) :-
+    write('Enter a letter: '),
+    read(Letter),
+    assertz(letter(Letter)),
+    write('Letter added at the bottom.'), nl,
+    menu.
+
+% Delete a letter
+execute(5) :-
+    write('Enter the letter to delete: '),
+    read(Letter),
+    ( retract(letter(Letter)) ->
+        write('Letter deleted successfully.'), nl
+    ;
+        write('Letter not found.'), nl
+    ),
+    menu.
+
+% Delete all letters
+execute(6) :-
+    retractall(letter(_)),
+    write('All letters have been deleted.'), nl,
+    menu.
+
+% Exit
+execute(7) :-
+    write('Thank you for playing the Name Game!'), nl.
+
+% Invalid choice
+execute(_) :-
+    write('Invalid choice. Try again.'), nl,
+    menu.
